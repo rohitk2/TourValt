@@ -1,0 +1,581 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #faf8f5;
+  min-height: 100vh;
+  font-family: 'Roboto', 'Arial', sans-serif;
+}
+
+#root {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.app {
+  font-family: 'Roboto', 'Arial', sans-serif;
+  min-height: 100vh;
+  width: 100%;
+  background: #faf8f5;
+}
+
+.header {
+  width: 100vw;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #e5e5e5;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.text-logo {
+  width: 40px;
+  height: 40px;
+  background: #ff0000;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.brand-name {
+  font-size: 24px;
+  font-weight: 600;
+  color: #030303;
+  font-family: 'Roboto', sans-serif;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  margin-left: auto;
+}
+
+.nav-link {
+  padding: 8px 16px;
+  border-radius: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  color: #030303;
+  font-size: 14px;
+  background: none;
+  border: none;
+  font-family: 'Roboto', sans-serif;
+}
+
+.nav-link:hover {
+  background: #f2f2f2;
+  color: #030303;
+}
+
+.nav-link.active {
+  background: #ff0000;
+  color: white;
+  font-weight: 500;
+}
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  background: #ffffff;
+  margin-top: 24px;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e5e5;
+}
+
+.main h1 {
+  text-align: center;
+  margin-bottom: 32px;
+  font-size: 28px;
+  color: #030303;
+  font-weight: 400;
+  font-family: 'Roboto', sans-serif;
+}
+
+.url-section {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  align-items: center;
+  background: #f5f2ed;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+
+.url-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+  background: #ffffff;
+}
+
+.url-input:focus {
+  outline: none;
+  border-color: #065fd4;
+  box-shadow: 0 0 0 1px #065fd4;
+}
+
+.generate-btn {
+  padding: 10px 16px;
+  background: #ff0000;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 18px;
+  transition: all 0.2s ease;
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.generate-btn:hover {
+  background: #cc0000;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #f5f2ed;
+  padding: 24px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+
+.form-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.form-group label {
+  min-width: 100px;
+  font-weight: 500;
+  padding-top: 10px;
+  color: #030303;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.form-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+  background: #ffffff;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #065fd4;
+  box-shadow: 0 0 0 1px #065fd4;
+}
+
+.form-textarea {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+  background: #ffffff;
+  min-height: 80px;
+  resize: vertical;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: #065fd4;
+  box-shadow: 0 0 0 1px #065fd4;
+}
+
+.apply-btn {
+  padding: 10px 16px;
+  background: #065fd4;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 18px;
+  transition: all 0.2s ease;
+  margin-left: 10px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.apply-btn:hover {
+  background: #0448a0;
+}
+
+/* Real Estate themed animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-section {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .nav {
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+  }
+  
+  .main {
+    margin: 20px;
+    padding: 30px 20px;
+  }
+  
+  .form-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .form-group label {
+    min-width: auto;
+    padding-top: 0;
+  }
+}
+
+/* Search Page Styles */
+.search-section {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  align-items: center;
+  background: #f5f2ed;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+  background: #ffffff;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #065fd4;
+  box-shadow: 0 0 0 1px #065fd4;
+}
+
+.search-btn {
+  padding: 10px 16px;
+  background: #ff0000;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 18px;
+  transition: all 0.2s ease;
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.search-btn:hover {
+  background: #cc0000;
+}
+
+.video-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+/* Remove button styles */
+.video-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: #f5f2ed;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+  transition: all 0.2s ease;
+  position: relative; /* Add this to make positioning work */
+}
+
+.remove-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 0, 0, 0.8);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  font-family: 'Roboto', sans-serif;
+}
+
+.remove-btn:hover {
+  background: rgba(255, 0, 0, 1);
+  transform: scale(1.1);
+}
+
+.remove-btn:active {
+  transform: scale(0.95);
+}
+
+/* Responsive design for remove button */
+@media (max-width: 768px) {
+  .remove-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+    top: 12px;
+    right: 12px;
+  }
+}
+
+.video-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.video-snippet {
+  position: relative;
+  width: 200px;
+  height: 120px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #e5e5e5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-overlay {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.video-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.video-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #030303;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.video-description {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.page-btn {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+  transition: all 0.2s ease;
+}
+
+.page-btn:hover {
+  background: #f5f2ed;
+  border-color: #999;
+}
+
+.page-btn.active {
+  background: #ff0000;
+  color: white;
+  border-color: #ff0000;
+}
+
+.page-btn.next-btn {
+  background: #065fd4;
+  color: white;
+  border-color: #065fd4;
+}
+
+.page-btn.next-btn:hover {
+  background: #0448a0;
+  border-color: #0448a0;
+}
+
+.pagination-dots {
+  color: #666;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Video Store Styles */
+.video-store-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.url-input-section {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.url-input-section h2 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.url-form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.url-input {
+  padding: 12px 20px;
+  border: 2px solid #ddd;
+  border-radius: 25px;
+  font-size: 16px;
+  width: 400px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.url-input:focus {
+  border-color: #ff4444;
+}
+
+.submit-btn {
+  padding: 12px 30px;
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #e63939;
+}
+
+/* Responsive design for Video Store */
+@media (max-width: 768px) {
+  .url-form {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .url-input {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 10px;
+  }
+}
