@@ -11,6 +11,8 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from urllib.parse import urlparse, parse_qs
 from youtube_to_mongo import get_youtube_data, connect_to_mongodb, insert_videos_to_collection, retrieve_videos_from_collection, delete_video_from_collection
 from youtube_to_pinecone import connect_to_pinecone, insert_videos_to_collection as insert_videos_to_pinecone, delete_video_from_collection as delete_from_pinecone
+from gemini_content_generator import initialize_langchain, get_title, get_description
+from parse_youtube import get_youtube_transcript
 
 class Video(BaseModel):
     id: str  # Change from int to str
@@ -198,6 +200,39 @@ def remove_video(video_id: str):
         # Clean up connections
         if mongo_client:
             mongo_client.close()
+
+# Add this before the existing endpoints or before the if __name__ == "__main__": line
+@app.get("/title_description")
+def get_title_description(url: str):
+    try:
+        # Initialize the LLM
+        llm = initialize_langchain()
+        
+        # Get transcript using existing function
+        transcript_text = get_youtube_transcript(url)
+        
+        if not transcript_text:
+            raise HTTPException(status_code=404, detail="Could not fetch transcript for this video")
+        
+        # Generate title and description using Gemini
+        generated_title = get_title(llm, transcript_text)
+        generated_description = get_description(llm, transcript_text)
+        
+        return {
+            "title": generated_title.strip(),
+            "description": generated_description.strip()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error in title_description endpoint: {str(e)}")
+        print(f"Error type: {type(e).__name__}")
+        # Fallback to sample data if anything goes wrong
+        return {
+            "title": f"Failed to generate title for {url}: {str(e)}",
+            "description": f"Failed to generate description for {url}: {str(e)}"
+        }
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

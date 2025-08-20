@@ -6,10 +6,35 @@ function ContentGeneration() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [feedback, setFeedback] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (url.trim()) {
-      setShowForm(true);
+      setLoading(true);
+      try {
+        // Pass the URL as a query parameter
+        const response = await fetch(`http://localhost:8000/title_description?url=${encodeURIComponent(url)}`);
+        if (response.ok) {
+          const data = await response.json();
+          setTitle(data.title);
+          setDescription(data.description);
+          setShowForm(true);
+        } else {
+          console.error('Failed to fetch title and description');
+          // Fallback to hardcoded values if API fails
+          setTitle('This is my sample title');
+          setDescription('This is my description. This is my description...');
+          setShowForm(true);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // Fallback to hardcoded values if API fails
+        setTitle('Failed to get title.');
+        setDescription('Failed to get description.');
+        setShowForm(true);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -29,8 +54,8 @@ function ContentGeneration() {
           onChange={(e) => setUrl(e.target.value)}
           className="url-input"
         />
-        <button onClick={handleGenerate} className="generate-btn">
-          GENERATE
+        <button onClick={handleGenerate} className="generate-btn" disabled={loading}>
+          {loading ? 'GENERATING...' : 'GENERATE'}
         </button>
       </div>
 
