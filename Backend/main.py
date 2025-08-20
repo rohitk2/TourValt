@@ -11,8 +11,9 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from urllib.parse import urlparse, parse_qs
 from youtube_to_mongo import get_youtube_data, connect_to_mongodb, insert_videos_to_collection, retrieve_videos_from_collection, delete_video_from_collection
 from youtube_to_pinecone import connect_to_pinecone, insert_videos_to_collection as insert_videos_to_pinecone, delete_video_from_collection as delete_from_pinecone
-from gemini_content_generator import initialize_langchain, get_title, get_description
+from gemini_content_generator import initialize_langchain, get_title, get_description, incorporate_feedback
 from parse_youtube import get_youtube_transcript
+import uuid
 
 class Video(BaseModel):
     id: str  # Change from int to str
@@ -25,7 +26,22 @@ class Video(BaseModel):
 class VideoCreate(BaseModel):
     url: str
 
+# New models for feedback functionality
+class FeedbackRequest(BaseModel):
+    session_id: str
+    user_feedback: str
+
+class SessionData(BaseModel):
+    session_id: str
+    url: str
+    title: str
+    description: str
+    transcript_text: str
+
 app = FastAPI(debug=True)
+
+# Session storage - in production, use Redis or database
+session_store = {}
 
 # Function to generate localhost origins for a port range
 def generate_localhost_origins(start_port: int, end_port: int) -> List[str]:
@@ -201,10 +217,10 @@ def remove_video(video_id: str):
         if mongo_client:
             mongo_client.close()
 
-# Add this before the existing endpoints or before the if __name__ == "__main__": line
 @app.get("/title_description")
 def get_title_description(url: str):
     try:
+        
         # Initialize the LLM
         llm = initialize_langchain()
         
@@ -218,7 +234,18 @@ def get_title_description(url: str):
         generated_title = get_title(llm, transcript_text)
         generated_description = get_description(llm, transcript_text)
         
+        # Create a session ID and store session data
+        session_id = str(uuid.uuid4())
+        session_store[session_id] = {
+            "llm": llm,
+            "url": url,
+            "title": generated_title.strip(),
+            "description": generated_description.strip(),
+            "transcript_text": transcript_text
+        }
+        
         return {
+            "session_id": session_id,
             "title": generated_title.strip(),
             "description": generated_description.strip()
         }
@@ -230,8 +257,62 @@ def get_title_description(url: str):
         print(f"Error type: {type(e).__name__}")
         # Fallback to sample data if anything goes wrong
         return {
+            "session_id": None,
             "title": f"Failed to generate title for {url}: {str(e)}",
             "description": f"Failed to generate description for {url}: {str(e)}"
+        }
+
+@app.post("/feedback_title_description")
+def feedback_title_description(feedback_request: FeedbackRequest):
+    try:
+        session_id = feedback_request.session_id
+        user_feedback = feedback_request.user_feedback
+        
+        # Check if session exists
+        if session_id not in session_store:
+            raise HTTPException(status_code=404, detail="Session not found. Please generate title/description first.")
+        
+        session_data = session_store[session_id]
+        
+        # Get stored data from session
+        llm = session_data["llm"]
+        transcript_text = session_data["transcript_text"]
+        current_title = session_data["title"]
+        current_description = session_data["description"]
+        
+        # Apply feedback using the incorporate_feedback function
+        feedback_result = incorporate_feedback(
+            llm=llm,
+            transcript_text=transcript_text,
+            current_title=current_title,
+            current_description=current_description,
+            user_feedback=user_feedback
+        )
+        
+        # Check if feedback_result contains an error
+        if "error" in feedback_result:
+            raise Exception(feedback_result["error"])
+        
+        # Update session with new title and description
+        session_store[session_id]["title"] = feedback_result["title"]
+        session_store[session_id]["description"] = feedback_result["description"]
+        
+        return {
+            "session_id": session_id,
+            "title": feedback_result["title"],
+            "description": feedback_result["description"]
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error in feedback_title_description endpoint: {str(e)}")
+        print(f"Error type: {type(e).__name__}")
+        return {
+            "session_id": feedback_request.session_id,
+            "title": "Can't Retrieve",
+            "description": "Can't Retrieve",
+            "error": str(e)
         }
 
 if __name__ == "__main__":
