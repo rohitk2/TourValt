@@ -10,9 +10,11 @@ from datetime import datetime
 from youtube_transcript_api import YouTubeTranscriptApi
 from urllib.parse import urlparse, parse_qs
 from youtube_to_mongo import get_youtube_data, connect_to_mongodb, insert_videos_to_collection, retrieve_videos_from_collection, delete_video_from_collection
-from youtube_to_pinecone import connect_to_pinecone, insert_videos_to_collection as insert_videos_to_pinecone, delete_video_from_collection as delete_from_pinecone
+# Add semantic_search to the existing import from youtube_to_pinecone_chunking
+from youtube_to_pinecone_chunking import connect_to_pinecone, insert_videos_to_collection as insert_videos_to_pinecone, delete_video_from_collection as delete_from_pinecone, semantic_search
 from gemini_content_generator import initialize_langchain, get_title, get_description, incorporate_feedback
 from parse_youtube import get_youtube_transcript
+from dummy_data import dummy_data
 import uuid
 
 class Video(BaseModel):
@@ -314,6 +316,25 @@ def feedback_title_description(feedback_request: FeedbackRequest):
             "description": "Can't Retrieve",
             "error": str(e)
         }
+
+@app.get("/search_results")
+def get_search_results(text: str):
+    """
+    Performs semantic search using Pinecone index
+    """
+    try:
+        # Connect to Pinecone
+        pinecone_index = connect_to_pinecone()
+        if not pinecone_index:
+            raise HTTPException(status_code=500, detail="Pinecone connection failed")
+        
+        # Perform semantic search
+        search_results = semantic_search(pinecone_index, text, k=10)
+        
+        return search_results
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Search failed: {str(e)}")
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

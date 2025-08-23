@@ -3,6 +3,7 @@ import './App.css';
 import ContentGeneration from './ContentGeneration';
 import Search from './Search';
 import VideoStore from './VideoStore';
+import Chatbot from './Chatbot';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('video-store');
@@ -53,6 +54,7 @@ function App() {
       <main className="main-content">
         {renderPage()}
       </main>
+      <Chatbot />
     </div>
   );
 }

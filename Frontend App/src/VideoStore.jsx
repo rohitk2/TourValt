@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import videoData from './videoData';
 
 function VideoStore() {
   const [urlInput, setUrlInput] = useState('');
