@@ -11,7 +11,7 @@ from langchain.chains import ConversationChain
 # Load environment variables and configure Gemini
 load_dotenv()
 genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel("gemini-2.0-flash")
 
 def initialize_langchain():
     """
@@ -20,7 +20,7 @@ def initialize_langchain():
     Returns:
         GoogleGenerativeAI: Configured LLM instance
     """
-    return GoogleGenerativeAI(model="gemini-1.5-flash", google_api_key=os.getenv('GEMINI_API_KEY'))
+    return GoogleGenerativeAI(model="gemini-2.0-flash", google_api_key=os.getenv('GEMINI_API_KEY'))
 
 def get_title(llm, transcript_text):
     """
